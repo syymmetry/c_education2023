@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <conio.h>
 
 #define width 65
 #define heigth 25
@@ -26,6 +27,15 @@ void putRacket()
         mas[racket.y][i] = '@';
 }
 
+void moveRacket(int x)
+{
+    racket.x = x;
+    if (racket.x < 1)
+        racket.x = 1;
+    if (racket.x + racket.w >= width)
+        racket.x = width - 1 - racket.w;
+}
+
 void init() 
 {
     for (int i = 0; i < width+1; i++)
@@ -45,15 +55,25 @@ void show()
 {
     for (int i=0; i<heigth; i++)
         printf("%s\n", mas[i]);
+        if (i < height - 1)
+            printf("\n");
 }
 
 int main()
 {
+    char c;
     initRacket();
 
-    init();
+    do {
+        init();
+        putRacket();
+        show();
+        c = getch();
 
-    show();
+        if (c == 'a') moveRacket(racket.x - 1);
+        if (c == 'd') moveRacket(racket.x + 1);
+    }
+    while (c != 'q');
 
     return 0;
 }
